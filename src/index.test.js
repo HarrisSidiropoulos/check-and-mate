@@ -1,10 +1,21 @@
-/* eslint-disable one-var, one-var-declaration-per-line, no-console */
+/* eslint-disable one-var, one-var-declaration-per-line, no-console, no-tabs, no-trailing-spaces */
 import { expect } from 'chai';
 import { isCheck } from './index';
 
 describe('isCheck', () => {
   describe('Some simple tests', () => {
     it('should return Pawn threatens king', () => {
+      /**
+        0 1 2 3 4	5 6 7
+      0					♚
+      1
+      2
+      3
+      4
+      5
+      6						♟
+      7					♔
+      */
       const pieces = [
         { piece: 'king', owner: 1, x: 4, y: 0 },
         { piece: 'king', owner: 0, x: 4, y: 7 },
@@ -13,6 +24,17 @@ describe('isCheck', () => {
       expect(isCheck(pieces, 0)).to.be.eql([pieces[2]]); // Pawn threatens king
     });
     it('should return Rook threatens king', () => {
+      /**
+        0 1 2 3 4	5 6 7
+      0					♚
+      1					♜
+      2
+      3
+      4
+      5
+      6
+      7					♔
+      */
       const pieces = [
         { piece: 'king', owner: 1, x: 4, y: 0 },
         { piece: 'king', owner: 0, x: 4, y: 7 },
@@ -21,6 +43,17 @@ describe('isCheck', () => {
       expect(isCheck(pieces, 0)).to.be.eql([pieces[2]]); // Rook threatens king
     });
     it('should return Knight threatens king', () => {
+      /**
+        0 1 2 3 4	5 6 7
+      0					♚
+      1
+      2
+      3
+      4
+      5
+      6     ♞
+      7					♔
+      */
       const pieces = [
         { piece: 'king', owner: 1, x: 4, y: 0 },
         { piece: 'king', owner: 0, x: 4, y: 7 },
@@ -29,6 +62,17 @@ describe('isCheck', () => {
       expect(isCheck(pieces, 0)).to.be.eql([pieces[2]]); // Knight threatens king
     });
     it('should return Bishop threatens king', () => {
+      /**
+        0 1 2 3 4	5 6 7
+      0					♚
+      1
+      2
+      3 ♝
+      4
+      5
+      6
+      7					♔
+      */
       const pieces = [
         { piece: 'king', owner: 1, x: 4, y: 0 },
         { piece: 'king', owner: 0, x: 4, y: 7 },
@@ -37,6 +81,17 @@ describe('isCheck', () => {
       expect(isCheck(pieces, 0)).to.be.eql([pieces[2]]); // Bishop threatens king
     });
     it('should return Queen threatens king', () => {
+      /**
+        0 1 2 3 4	5 6 7
+      0					♚
+      1					♛
+      2
+      3
+      4
+      5
+      6
+      7					♔
+      */
       const pieces = [
         { piece: 'king', owner: 1, x: 4, y: 0 },
         { piece: 'king', owner: 0, x: 4, y: 7 },
@@ -45,6 +100,17 @@ describe('isCheck', () => {
       expect(isCheck(pieces, 0)).to.be.eql([pieces[2]]); // Queen threatens king
     });
     it('should return Queen threatens king', () => {
+      /**
+        0 1 2 3 4	5 6 7
+      0					♚
+      1
+      2
+      3
+      4               ♔
+      5
+      6
+      7					♔
+      */
       const pieces = [
         { piece: 'king', owner: 1, x: 4, y: 0 },
         { piece: 'king', owner: 0, x: 4, y: 7 },
@@ -53,6 +119,17 @@ describe('isCheck', () => {
       expect(isCheck(pieces, 0)).to.be.eql([pieces[2]]); // Queen threatens king
     });
     it('should return Double threat', () => {
+      /**
+        0 1	2	3	4	5	6	7	8
+      0					♚
+      1
+      2
+      3
+      4		♝						
+      5			♜
+      6					♙	♙
+      7			♜		♔	♗
+      */
       const pieces = [
         { piece: 'king', owner: 1, x: 4, y: 0 },
         { piece: 'pawn', owner: 0, x: 4, y: 6 },
