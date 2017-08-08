@@ -144,20 +144,20 @@ function isMate(pieces, player) {
   const king = pieces.filter(p => p.piece === KING && p.owner === player)[0];
   const playerPieces = pieces.filter(p => p.piece !== KING && p.owner === player);
   return [
-    { ...king, x: king.x + 1, y: king.y },
-    { ...king, x: king.x - 1, y: king.y },
-    { ...king, x: king.x, y: king.y + 1 },
-    { ...king, x: king.x, y: king.y - 1 },
-    { ...king, x: king.x + 1, y: king.y + 1 },
-    { ...king, x: king.x - 1, y: king.y + 1 },
-    { ...king, x: king.x - 1, y: king.y - 1 },
-    { ...king, x: king.x + 1, y: king.y - 1 },
+    { x: king.x + 1, y: king.y },
+    { x: king.x - 1, y: king.y },
+    { x: king.x, y: king.y + 1 },
+    { x: king.x, y: king.y - 1 },
+    { x: king.x + 1, y: king.y + 1 },
+    { x: king.x - 1, y: king.y + 1 },
+    { x: king.x - 1, y: king.y - 1 },
+    { x: king.x + 1, y: king.y - 1 },
   ]
   .filter(p => isValidPosition(p))
   .filter(p => playerPieces.every(p1 => !(p1.x === p.x && p1.y === p.y)))
   .map((k) => {
     const newPieces = pieces.filter(p => !(p.piece === KING && p.owner === player));
-    newPieces.push(k);
+    newPieces.push(Object.assign({}, king, k));
     return newPieces;
   })
   .every(v => isCheck(v, player));
