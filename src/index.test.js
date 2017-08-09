@@ -408,7 +408,19 @@ describe('isMate', () => {
       ];
       expect(isMate(pieces, 0)).to.be.eql(false);
     });
-    xit('Pawn should intercept by double-moving', () => {
+    it('Pawn should intercept by double-moving', () => {
+      /*
+        0 1 2 3 4 5 6 7
+      0				♝	♚
+      1
+      2
+      3	♝
+      4
+      5
+      6		♙			♙	♙
+      7	♛			♖	♔	♗
+
+      */
       const pieces = [
         { piece: 'king', owner: 1, x: 4, y: 0 },
         { piece: 'bishop', owner: 1, x: 0, y: 3, prevX: 3, prevY: 0 },
@@ -423,13 +435,25 @@ describe('isMate', () => {
       expect(isMate(pieces, 0)).to.be.eql(false);
     });
     xit('En passant', () => {
+      /*
+        0 1 2 3 4 5 6 7
+      0
+      1
+      2					♝	♜
+      3				♞	♟	♚
+      4					♙	♟
+      5			♘				♕
+      6					♙	♖
+      7					♔
+
+      */
       const pieces = [
         { piece: 'king', owner: 1, x: 5, y: 3 },
         { piece: 'pawn', owner: 0, x: 4, y: 4, prevX: 4, prevY: 6 },
-        { piece: 'pawn', owner: 0, x: 5, y: 6 },
+        { piece: 'rook', owner: 0, x: 5, y: 6 },
         { piece: 'king', owner: 0, x: 4, y: 7 },
         { piece: 'knight', owner: 0, x: 2, y: 5 },
-        { piece: 'pawn', owner: 1, x: 3, y: 4 },
+        { piece: 'pawn', owner: 1, x: 5, y: 4 },
         { piece: 'knight', owner: 1, x: 3, y: 3 },
         { piece: 'pawn', owner: 1, x: 4, y: 3 },
         { piece: 'bishop', owner: 1, x: 4, y: 2 },

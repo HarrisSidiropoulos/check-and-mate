@@ -139,14 +139,21 @@ function checkAllPiecePositions(piece, positions, pieces, player) {
 
 function pawnCanIntercept(piece, pieces, player) {
   const positions = [], opponentPieces = pieces.filter(p => p.owner !== player);
-  const n = player === 1 ? 1 : -1;
+  const n = player === 0 ? -1 : 1;
   let pos = { x: piece.x, y: piece.y + n };
-  if (isEmpty(pos, opponentPieces)) positions.push(pos);
+  if (isEmpty(pos, pieces)) positions.push(pos);
   pos = { x: piece.x + n, y: piece.y + n };
   if (!isEmpty(pos, opponentPieces)) positions.push(pos);
   pos = { x: piece.x - n, y: piece.y + n };
   if (!isEmpty(pos, opponentPieces)) positions.push(pos);
-
+  if (player === 0 && piece.y === 6) {
+    pos = { x: piece.x, y: piece.y - 2 };
+    if (isEmpty({ x: piece.x, y: piece.y - 1 }, pieces) && isEmpty(pos, pieces)) positions.push(pos);
+  }
+  if (player === 1 && piece.y === 1) {
+    pos = { x: piece.x, y: piece.y + 2 };
+    if (isEmpty({ x: piece.x, y: piece.y + 1 }, pieces) && isEmpty(pos, opponentPieces)) positions.push(pos);
+  }
   return !checkAllPiecePositions(piece, positions, pieces, player);
 }
 
