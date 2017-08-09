@@ -8,7 +8,7 @@ const KNIGHT = 'knight';
 const BISHOP = 'bishop';
 const PAWN   = 'pawn';
 
-const isEmpty = (pos, pieces) => !pieces.every(p => p.x === pos.x && p.y === pos.y);
+const isEmpty = (pos, pieces) => pieces.every(p => !(p.x === pos.x && p.y === pos.y));
 const isKing = (pos, pieces, player) =>
   pieces.filter(p => p.piece === KING && p.owner === player && p.x === pos.x && p.y === pos.y).length === 1;
 const isValidPosition = (p, piece = { x: -1, y: -1 }) =>
@@ -130,7 +130,7 @@ function isCheck(pieces, player) {
 function checkAllPiecePositions(piece, positions, pieces, player) {
   return positions
     .map((k) => {
-      const newPieces = pieces.filter(p => p !== piece);
+      const newPieces = pieces.filter(p => p !== piece && !(p.x === k.x && p.y === k.y));
       newPieces.push(Object.assign({}, piece, k));
       return newPieces;
     })
@@ -139,14 +139,15 @@ function checkAllPiecePositions(piece, positions, pieces, player) {
 
 function pawnCanIntercept(piece, pieces, player) {
   const positions = [], opponentPieces = pieces.filter(p => p.owner !== player);
-  const n = player === 0 ? 1 : -1;
+  const n = player === 1 ? 1 : -1;
   let pos = { x: piece.x, y: piece.y + n };
   if (isEmpty(pos, opponentPieces)) positions.push(pos);
   pos = { x: piece.x + n, y: piece.y + n };
   if (!isEmpty(pos, opponentPieces)) positions.push(pos);
   pos = { x: piece.x - n, y: piece.y + n };
   if (!isEmpty(pos, opponentPieces)) positions.push(pos);
-  return checkAllPiecePositions(piece, positions, pieces, player);
+
+  return !checkAllPiecePositions(piece, positions, pieces, player);
 }
 
 function knightCanIntercept(piece, pieces, player) {
@@ -160,7 +161,7 @@ function knightCanIntercept(piece, pieces, player) {
     { x: piece.x + 1, y: piece.y - 2 },
     { x: piece.x - 1, y: piece.y - 2 },
   ].filter(p => isValidPosition(p));
-  return checkAllPiecePositions(piece, positions, pieces, player);
+  return !checkAllPiecePositions(piece, positions, pieces, player);
 }
 function bishopCanIntercept(piece, pieces, player) {
   const positions = [], playerPieces = pieces.filter(p => p.owner === player);
@@ -187,7 +188,7 @@ function bishopCanIntercept(piece, pieces, player) {
       topLeft = isEmpty(pos, pieces);
     }
   }
-  return checkAllPiecePositions(piece, positions, pieces, player);
+  return !checkAllPiecePositions(piece, positions, pieces, player);
 }
 function rookCanIntercept(piece, pieces, player) {
   const positions = [], playerPieces = pieces.filter(p => p.owner === player);
@@ -214,7 +215,7 @@ function rookCanIntercept(piece, pieces, player) {
       right = isEmpty(pos, pieces);
     }
   }
-  return checkAllPiecePositions(piece, positions, pieces, player);
+  return !checkAllPiecePositions(piece, positions, pieces, player);
 }
 function queenCanIntercept(piece, pieces, player) {
   return bishopCanIntercept(piece, pieces, player) || rookCanIntercept(piece, pieces, player);
@@ -261,7 +262,6 @@ function isMate(pieces, player) {
   ]
   .filter(p => isValidPosition(p))
   .filter(p => playerPieces.every(p1 => !(p1.x === p.x && p1.y === p.y)));
-
   return checkAllPiecePositions(king, positions, pieces, player) && !canIntercept(pieces, player);
 }
 
