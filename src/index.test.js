@@ -443,9 +443,35 @@ describe('isMate', () => {
       3				♞	♟	♚
       4					♙	♟
       5			♘				♕
-      6					♙	♖
+      6					♙
       7					♔
 
+      */
+      const pieces = [
+        { piece: 'king', owner: 1, x: 5, y: 3 },
+        { piece: 'pawn', owner: 0, x: 4, y: 4, prevX: 4, prevY: 6 },
+        { piece: 'rook', owner: 0, x: 5, y: 6 },
+        { piece: 'king', owner: 0, x: 4, y: 7 },
+        { piece: 'knight', owner: 0, x: 2, y: 5 },
+        { piece: 'pawn', owner: 1, x: 5, y: 4 },
+        { piece: 'knight', owner: 1, x: 3, y: 3 },
+        { piece: 'pawn', owner: 1, x: 4, y: 3 },
+        { piece: 'bishop', owner: 1, x: 4, y: 2 },
+        { piece: 'queen', owner: 0, x: 6, y: 5 },
+      ];
+      expect(isMate(pieces, 1)).to.be.eql(false);
+    });
+    it('En passant would cause check', () => {
+      /*
+        0 1 2 3 4 5 6 7
+      0
+      1
+      2					♝	♜
+      3				♞	♟	♚
+      4					♙	♟
+      5			♘				♕
+      6					♙	♖
+      7					♔
       */
       const pieces = [
         { piece: 'king', owner: 1, x: 5, y: 3 },
@@ -460,7 +486,7 @@ describe('isMate', () => {
         { piece: 'rook', owner: 1, x: 5, y: 2 },
         { piece: 'queen', owner: 0, x: 6, y: 5 },
       ];
-      expect(isMate(pieces, 1)).to.be.eql(false);
+      expect(isMate(pieces, 1)).to.be.eql(true);
     });
   });
 });

@@ -141,8 +141,7 @@ function pawnCanIntercept(piece, pieces, player) {
   const positions = [], opponentPieces = pieces.filter(p => p.owner !== player);
   const n = player === 0 ? -1 : 1;
   let pos = { x: piece.x, y: piece.y + n };
-  const enPassant = pieces.find(p => p.piece === 'pawn' && p.x === pos.x && p.y === pos.y && p.prevY && p.prevY === p.y + (player === 0 ? 2 : 2));
-  if (isEmpty(pos, pieces) || enPassant) positions.push(pos);
+  if (isEmpty(pos, pieces)) positions.push(pos);
   pos = { x: piece.x + n, y: piece.y + n };
   if (!isEmpty(pos, opponentPieces)) positions.push(pos);
   pos = { x: piece.x - n, y: piece.y + n };
@@ -154,6 +153,12 @@ function pawnCanIntercept(piece, pieces, player) {
   if (player === 1 && piece.y === 1) {
     pos = { x: piece.x, y: piece.y + 2 };
     if (isEmpty({ x: piece.x, y: piece.y + 1 }, pieces) && isEmpty(pos, opponentPieces)) positions.push(pos);
+  }
+  const enPassant = pieces.find(p => p.piece === 'pawn' && (p.x === piece.x - 1 || p.x === piece.x + 1) && p.y === piece.y && p.prevY && p.prevY === p.y + (player === 0 ? 2 : 2));
+  if (enPassant) {
+    const newpieces = pieces.filter(v => !(v === enPassant || (v === piece)));
+    newpieces.push({ piece: 'pawn', owner: 1, x: enPassant.x, y: enPassant.y + 1 });
+    if (!isCheck(newpieces, player)) return true;
   }
   return !checkAllPiecePositions(piece, positions, pieces, player);
 }
