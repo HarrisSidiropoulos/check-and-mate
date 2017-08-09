@@ -434,7 +434,7 @@ describe('isMate', () => {
       ];
       expect(isMate(pieces, 0)).to.be.eql(false);
     });
-    xit('En passant', () => {
+    it('En passant', () => {
       /*
         0 1 2 3 4 5 6 7
       0
